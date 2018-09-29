@@ -4,10 +4,16 @@ class CephClient < Formula
   url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v13.2.2", :revision => "02899bfda814146b021136e9d8e80eba494e1126"
   version "mimic-13.2.2"
 
+  bottle do
+    root_url "https://github.com/zeichenanonym/homebrew-ceph-client/releases/download/mimic-13.2.2/"
+    sha256 "f6fe56a118b4e09b9729fdabd071219708bb97fd9bd9a7d10594722316c7a54a" => :high_sierra
+  end
+
   depends_on python if MacOS.version <= :snow_leopard
 
   depends_on :osxfuse
   depends_on "openssl" => :build
+  depends_on "ccache" => :build
   depends_on "cmake" => :build
   depends_on "cython" => :build
   depends_on "leveldb" => :build
