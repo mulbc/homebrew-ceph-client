@@ -13,7 +13,6 @@ class CephClient < Formula
 
   depends_on :osxfuse
   depends_on "openssl" => :build
-  depends_on "ccache" => :build
   depends_on "cmake" => :build
   depends_on "cython" => :build
   depends_on "leveldb" => :build
@@ -34,7 +33,7 @@ class CephClient < Formula
               "-DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include",
               "-DWITH_BABELTRACE=OFF",
               "-DWITH_BLUESTORE=OFF",
-              "-DWITH_CCACHE=ON",
+              "-DWITH_CCACHE=OFF",
               "-DWITH_CEPHFS=ON",
               "-DWITH_EMBEDDED=OFF",
               "-DWITH_KRBD=OFF",
