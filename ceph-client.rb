@@ -9,8 +9,6 @@ class CephClient < Formula
     sha256 "f6fe56a118b4e09b9729fdabd071219708bb97fd9bd9a7d10594722316c7a54a" => :high_sierra
   end
 
-  depends_on python if MacOS.version <= :snow_leopard
-
   depends_on :osxfuse
   depends_on "openssl" => :build
   depends_on "cmake" => :build
@@ -18,6 +16,7 @@ class CephClient < Formula
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
+  depends_on "python@2" if MacOS.version <= :snow_leopard
   depends_on "yasm"
 
   patch :DATA
