@@ -81,6 +81,7 @@ class CephClient < Formula
     lib.install "build/lib/librbd.1.dylib"
     lib.install "build/lib/librbd.dylib"
     man8.install "build/doc/man/ceph-conf.8"
+    man8.install "build/doc/man/ceph-fuse.8"
     man8.install "build/doc/man/ceph.8"
     man8.install "build/doc/man/librados-config.8"
     man8.install "build/doc/man/rados.8"
