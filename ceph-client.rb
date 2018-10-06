@@ -17,6 +17,7 @@ class CephClient < Formula
   depends_on "nss"
   depends_on "pkg-config" => :build
   depends_on "python@2" if MacOS.version <= :snow_leopard
+  depends_on "sphinx-doc" => :build
   depends_on "yasm"
 
   patch :DATA
