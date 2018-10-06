@@ -13,7 +13,6 @@ class CephClient < Formula
 
   depends_on :osxfuse
   depends_on "openssl" => :build
-  depends_on "ccache" => :build
   depends_on "cmake" => :build
   depends_on "cython" => :build
   depends_on "leveldb" => :build
@@ -34,7 +33,7 @@ class CephClient < Formula
               "-DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include",
               "-DWITH_BABELTRACE=OFF",
               "-DWITH_BLUESTORE=OFF",
-              "-DWITH_CCACHE=ON",
+              "-DWITH_CCACHE=OFF",
               "-DWITH_CEPHFS=ON",
               "-DWITH_EMBEDDED=OFF",
               "-DWITH_KRBD=OFF",
@@ -111,24 +110,24 @@ end
 
 __END__
 diff --git a/src/include/any.h b/src/include/any.h
-index 73e729b495..241e0e6d51 100644
+index 73e729b..241e0e6 100644
 --- a/src/include/any.h
 +++ b/src/include/any.h
 @@ -15,17 +15,10 @@
-#ifndef INCLUDE_STATIC_ANY
-#define INCLUDE_STATIC_ANY
-
+ #ifndef INCLUDE_STATIC_ANY
+ #define INCLUDE_STATIC_ANY
+ 
 -#if __has_include(<any>)
 -#include <any>
 -namespace ceph {
 -  using std::bad_any_cast;
 -}
 -#else
-#include <boost/any.hpp>
-namespace ceph {
-    using boost::bad_any_cast;
-}
+ #include <boost/any.hpp>
+ namespace ceph {
+   using boost::bad_any_cast;
+ }
 -#endif
-
-#include <cstddef>
-#include <initializer_list>
+ 
+ #include <cstddef>
+ #include <initializer_list>
