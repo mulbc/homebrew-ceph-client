@@ -28,10 +28,6 @@ class CephClient < Formula
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_lib}/pkgconfig"
     ENV.prepend_path "PYTHONPATH", "#{Formula["cython"].opt_libexec}/lib/python#{pyver}/site-packages"
     args = %W[
-      -DCMAKE_BUILD_TYPE=Debug
-      -DCMAKE_C_COMPILER=clang
-      -DCMAKE_CXX_COMPILER=clang++
-      -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DDIAGNOSTICS_COLOR=always
       -DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}
       -DWITH_BABELTRACE=OFF
@@ -49,7 +45,7 @@ class CephClient < Formula
       -DWITH_SYSTEMD=OFF
       -DWITH_XFS=OFF
     ]
-    system "./do_cmake.sh", *args
+    system "./do_cmake.sh", *args, *std_cmake_args
     system "make", "--directory=build", "rados", "rbd", "ceph-fuse", "manpages"
     MachO.open("build/bin/rados").linked_dylibs.each do |dylib|
       unless dylib.start_with?("/tmp/")
