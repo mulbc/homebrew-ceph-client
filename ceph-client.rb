@@ -48,24 +48,19 @@ class CephClient < Formula
     mkdir "build" do
       system "cmake", "..", *args, *std_cmake_args
       system "make", "rados", "rbd", "ceph-fuse", "manpages"
-    end
-    MachO.open("build/bin/rados").linked_dylibs.each do |dylib|
-      unless dylib.start_with?("/tmp/")
-        next
+      executables = %w[
+        bin/rados
+        bin/rbd
+        bin/ceph-fuse
+      ]
+      executables.each do |file|
+        MachO.open(file).linked_dylibs.each do |dylib|
+          unless dylib.start_with?("/tmp/")
+            next
+          end
+          MachO::Tools.change_install_name(file, dylib, "#{lib}/#{dylib.split('/')[-1]}")
+        end
       end
-      MachO::Tools.change_install_name("build/bin/rados", dylib, "#{lib}/#{dylib.split('/')[-1]}")
-    end
-    MachO.open("build/bin/rbd").linked_dylibs.each do |dylib|
-      unless dylib.start_with?("/tmp/")
-        next
-      end
-      MachO::Tools.change_install_name("build/bin/rbd", dylib, "#{lib}/#{dylib.split('/')[-1]}")
-    end
-    MachO.open("build/bin/ceph-fuse").linked_dylibs.each do |dylib|
-      unless dylib.start_with?("/tmp/")
-        next
-      end
-      MachO::Tools.change_install_name("build/bin/ceph-fuse", dylib, "#{lib}/#{dylib.split('/')[-1]}")
     end
     bin.install "build/bin/ceph"
     bin.install "build/bin/ceph-fuse"
