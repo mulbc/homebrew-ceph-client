@@ -31,13 +31,13 @@ class CephClient < Formula
       -DCMAKE_BUILD_TYPE=Debug
       -DCMAKE_C_COMPILER=clang
       -DCMAKE_CXX_COMPILER=clang++
+      -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DDIAGNOSTICS_COLOR=always
-      -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
+      -DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}
       -DWITH_BABELTRACE=OFF
       -DWITH_BLUESTORE=OFF
       -DWITH_CCACHE=OFF
       -DWITH_CEPHFS=ON
-      -DWITH_EMBEDDED=OFF
       -DWITH_KRBD=OFF
       -DWITH_LIBCEPHFS=OFF
       -DWITH_LTTNG=OFF
