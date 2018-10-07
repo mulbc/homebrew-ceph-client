@@ -45,8 +45,10 @@ class CephClient < Formula
       -DWITH_SYSTEMD=OFF
       -DWITH_XFS=OFF
     ]
-    system "./do_cmake.sh", *args, *std_cmake_args
-    system "make", "--directory=build", "rados", "rbd", "ceph-fuse", "manpages"
+    mkdir "build" do
+      system "cmake", "..", *args, *std_cmake_args
+      system "make", "rados", "rbd", "ceph-fuse", "manpages"
+    end
     MachO.open("build/bin/rados").linked_dylibs.each do |dylib|
       unless dylib.start_with?("/tmp/")
         next
