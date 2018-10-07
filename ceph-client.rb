@@ -27,27 +27,29 @@ class CephClient < Formula
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["nss"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_lib}/pkgconfig"
     ENV.prepend_path "PYTHONPATH", "#{Formula["cython"].opt_libexec}/lib/python#{pyver}/site-packages"
-    system "./do_cmake.sh",
-              "-DCMAKE_BUILD_TYPE=Debug",
-              "-DCMAKE_C_COMPILER=clang",
-              "-DCMAKE_CXX_COMPILER=clang++",
-              "-DDIAGNOSTICS_COLOR=always",
-              "-DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include",
-              "-DWITH_BABELTRACE=OFF",
-              "-DWITH_BLUESTORE=OFF",
-              "-DWITH_CCACHE=OFF",
-              "-DWITH_CEPHFS=ON",
-              "-DWITH_EMBEDDED=OFF",
-              "-DWITH_KRBD=OFF",
-              "-DWITH_LIBCEPHFS=OFF",
-              "-DWITH_LTTNG=OFF",
-              "-DWITH_LZ4=OFF",
-              "-DWITH_MANPAGE=ON",
-              "-DWITH_RADOSGW=OFF",
-              "-DWITH_RDMA=OFF",
-              "-DWITH_SPDK=OFF",
-              "-DWITH_SYSTEMD=OFF",
-              "-DWITH_XFS=OFF"
+    args = %W[
+      -DCMAKE_BUILD_TYPE=Debug
+      -DCMAKE_C_COMPILER=clang
+      -DCMAKE_CXX_COMPILER=clang++
+      -DDIAGNOSTICS_COLOR=always
+      -DOPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
+      -DWITH_BABELTRACE=OFF
+      -DWITH_BLUESTORE=OFF
+      -DWITH_CCACHE=OFF
+      -DWITH_CEPHFS=ON
+      -DWITH_EMBEDDED=OFF
+      -DWITH_KRBD=OFF
+      -DWITH_LIBCEPHFS=OFF
+      -DWITH_LTTNG=OFF
+      -DWITH_LZ4=OFF
+      -DWITH_MANPAGE=ON
+      -DWITH_RADOSGW=OFF
+      -DWITH_RDMA=OFF
+      -DWITH_SPDK=OFF
+      -DWITH_SYSTEMD=OFF
+      -DWITH_XFS=OFF
+    ]
+    system "./do_cmake.sh", *args
     system "make", "--directory=build", "rados", "rbd", "ceph-fuse", "manpages"
     MachO.open("build/bin/rados").linked_dylibs.each do |dylib|
       unless dylib.start_with?("/tmp/")
