@@ -112,7 +112,7 @@ class CephClient < Formula
   end
 
   def caveats; <<~EOS
-    The fuse version shipped with osxfuse is to old to access the
+    The fuse version shipped with osxfuse is too old to access the
     supplementary group IDs in cephfs.
     Thus you need to add this to your ceph.conf to avoid errors:
 
