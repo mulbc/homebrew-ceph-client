@@ -17,7 +17,7 @@ class CephClient < Formula
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
-  depends_on "python@2" if MacOS.version <= :snow_leopard
+  depends_on "python@2"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
 
@@ -48,7 +48,7 @@ class CephClient < Formula
     ]
     mkdir "build" do
       system "cmake", "..", *args, *std_cmake_args
-      system "make", "rados", "rbd", "ceph-fuse", "manpages"
+      system "make", "rados", "rbd", "ceph-fuse", "manpages", "cython_rados", "cython_rbd"
       executables = %w[
         bin/rados
         bin/rbd
@@ -97,6 +97,8 @@ class CephClient < Formula
     libexec.install "src/pybind/ceph_daemon.py"
     libexec.install "src/pybind/ceph_volume_client.py"
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    system "make", "--directory", "build/src/pybind/rados/", "install"
+    system "make", "--directory", "build/src/pybind/rbd/", "install"
   end
 
   def caveats; <<~EOS
@@ -115,6 +117,8 @@ class CephClient < Formula
     system "#{bin}/ceph-fuse", "--version"
     system "#{bin}/rbd", "--version"
     system "#{bin}/rados", "--version"
+    system "python", "-c", "import rados"
+    system "python", "-c", "import rbd"
   end
 end
 
