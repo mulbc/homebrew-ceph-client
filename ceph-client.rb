@@ -21,6 +21,11 @@ class CephClient < Formula
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
 
+  resource "PrettyTable" do
+    url "https://files.pythonhosted.org/packages/ef/30/4b0746848746ed5941f052479e7c23d2b56d174b82f4fd34a25e389831f5/prettytable-0.7.2.tar.bz2"
+    sha256 "853c116513625c738dc3ce1aee148b5b5757a86727e67eff6502c7ca59d43c36"
+  end
+
   patch :DATA
 
   def install
@@ -92,10 +97,19 @@ class CephClient < Formula
     man8.install "build/doc/man/rbd-replay.8"
     man8.install "build/doc/man/rbd.8"
     man8.install "build/doc/man/rbdmap.8"
-    ENV.prepend_create_path "PYTHONPATH", libexec
+
     libexec.install "src/pybind/ceph_argparse.py"
     libexec.install "src/pybind/ceph_daemon.py"
     libexec.install "src/pybind/ceph_volume_client.py"
+    ENV.prepend_create_path "PYTHONPATH", libexec
+
+    resources.each do |r|
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{pyver}/site-packages"
+
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     system "make", "--directory", "build/src/pybind/rados/", "install"
     system "make", "--directory", "build/src/pybind/rbd/", "install"
