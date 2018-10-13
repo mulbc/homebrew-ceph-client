@@ -45,10 +45,13 @@ class CephClient < Formula
       -DWITH_LTTNG=OFF
       -DWITH_LZ4=OFF
       -DWITH_MANPAGE=ON
+      -DWITH_MGR=OFF
+      -DWITH_MGR_DASHBOARD_FRONTEND=OFF
       -DWITH_RADOSGW=OFF
       -DWITH_RDMA=OFF
       -DWITH_SPDK=OFF
       -DWITH_SYSTEMD=OFF
+      -DWITH_TESTS=OFF
       -DWITH_XFS=OFF
     ]
     mkdir "build" do
