@@ -101,21 +101,14 @@ class CephClient < Formula
     man8.install "build/doc/man/rbd.8"
     man8.install "build/doc/man/rbdmap.8"
 
-    libexec.install "src/pybind/ceph_argparse.py"
-    libexec.install "src/pybind/ceph_daemon.py"
-    libexec.install "src/pybind/ceph_volume_client.py"
-    ENV.prepend_create_path "PYTHONPATH", libexec
-
+    system "make", "--directory", "build/src/pybind", "install"
     resources.each do |r|
       r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{pyver}/site-packages"
-
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-    system "make", "--directory", "build/src/pybind/rados/", "install"
-    system "make", "--directory", "build/src/pybind/rbd/", "install"
   end
 
   def caveats; <<~EOS
