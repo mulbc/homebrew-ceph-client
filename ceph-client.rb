@@ -100,11 +100,14 @@ class CephClient < Formula
   end
 
   def caveats; <<~EOS
-    You might want to disable "fuse_set_user_groups" in your ceph.conf
-    when using ceph-fuse to avoid error messages, because the fuse
-    version shipped along with osxfuse does not offer the necessary
-    functions for accessing the supplementary group IDs.
-  EOS
+    The fuse version shipped with osxfuse is to old to access the
+    supplementary group IDs in cephfs.
+    Thus you need to add this to your ceph.conf to avoid errors:
+
+    [client]
+    fuse_set_user_groups = false
+
+    EOS
   end
 
   test do
