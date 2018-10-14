@@ -82,6 +82,7 @@ class CephClient < Formula
       end
       %w[
         ceph
+        ceph-conf
         ceph-fuse
         rados
         rbd
