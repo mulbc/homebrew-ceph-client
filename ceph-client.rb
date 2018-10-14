@@ -54,9 +54,17 @@ class CephClient < Formula
       -DWITH_TESTS=OFF
       -DWITH_XFS=OFF
     ]
+    targets = %w[
+      rados
+      rbd
+      ceph-fuse
+      manpages
+      cython_rados
+      cython_rbd
+    ]
     mkdir "build" do
       system "cmake", "..", *args, *std_cmake_args
-      system "make", "rados", "rbd", "ceph-fuse", "manpages", "cython_rados", "cython_rbd"
+      system "make", *targets
       executables = %w[
         bin/rados
         bin/rbd
