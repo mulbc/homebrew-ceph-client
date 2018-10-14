@@ -57,6 +57,7 @@ class CephClient < Formula
     targets = %w[
       rados
       rbd
+      ceph-conf
       ceph-fuse
       manpages
       cython_rados
