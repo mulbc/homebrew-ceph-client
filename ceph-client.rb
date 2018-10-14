@@ -107,13 +107,6 @@ class CephClient < Formula
         ceph
         librados-config
         rados
-        rbd-fuse
-        rbd-ggate
-        rbd-mirror
-        rbd-nbd
-        rbd-replay-many
-        rbd-replay-prep
-        rbd-replay
         rbd
       ].each do |name|
         man8.install "doc/man/#{name}.8"
