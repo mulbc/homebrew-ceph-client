@@ -6,8 +6,9 @@ class CephClient < Formula
 
   bottle do
     root_url "https://github.com/zeichenanonym/homebrew-ceph-client/releases/download/mimic-13.2.2/"
-    rebuild 2
-    sha256 "ce1d1466369110712a9971e9597585f19e0e1d866c1822fbb9eef7a49f0c57c8" => :high_sierra
+    rebuild 3
+    sha256 "bdd251e5ac96c2ee9e174b7f1099e64c9e728f602b6f403e3fa021726f61e281" => :high_sierra
+    sha256 "23a92ceab5653c62a840658a304a53dd31289b80992c493fd3225e6daa70f169" => :mojave
   end
 
   depends_on :osxfuse
@@ -20,6 +21,11 @@ class CephClient < Formula
   depends_on "python@2"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
+
+  resource "PrettyTable" do
+    url "https://files.pythonhosted.org/packages/ef/30/4b0746848746ed5941f052479e7c23d2b56d174b82f4fd34a25e389831f5/prettytable-0.7.2.tar.bz2"
+    sha256 "853c116513625c738dc3ce1aee148b5b5757a86727e67eff6502c7ca59d43c36"
+  end
 
   patch :DATA
 
@@ -40,15 +46,27 @@ class CephClient < Formula
       -DWITH_LTTNG=OFF
       -DWITH_LZ4=OFF
       -DWITH_MANPAGE=ON
+      -DWITH_MGR=OFF
+      -DWITH_MGR_DASHBOARD_FRONTEND=OFF
       -DWITH_RADOSGW=OFF
       -DWITH_RDMA=OFF
       -DWITH_SPDK=OFF
       -DWITH_SYSTEMD=OFF
+      -DWITH_TESTS=OFF
       -DWITH_XFS=OFF
+    ]
+    targets = %w[
+      rados
+      rbd
+      ceph-conf
+      ceph-fuse
+      manpages
+      cython_rados
+      cython_rbd
     ]
     mkdir "build" do
       system "cmake", "..", *args, *std_cmake_args
-      system "make", "rados", "rbd", "ceph-fuse", "manpages", "cython_rados", "cython_rbd"
+      system "make", *targets
       executables = %w[
         bin/rados
         bin/rbd
@@ -62,47 +80,53 @@ class CephClient < Formula
           MachO::Tools.change_install_name(file, dylib, "#{lib}/#{dylib.split('/')[-1]}")
         end
       end
+      %w[
+        ceph
+        ceph-fuse
+        rados
+        rbd
+      ].each do |file|
+        bin.install "bin/#{file}"
+      end
+      %w[
+        ceph-common.0
+        ceph-common
+        rados.2.0.0
+        rados.2
+        rados
+        radosstriper.1.0.0
+        radosstriper.1
+        radosstriper
+        rbd.1.12.0
+        rbd.1
+        rbd
+      ].each do |name|
+        lib.install "lib/lib#{name}.dylib"
+      end
+      %w[
+        ceph-conf
+        ceph-fuse
+        ceph
+        librados-config
+        rados
+        rbd
+      ].each do |name|
+        man8.install "doc/man/#{name}.8"
+      end
     end
-    bin.install "build/bin/ceph"
-    bin.install "build/bin/ceph-fuse"
-    bin.install "build/bin/rados"
-    bin.install "build/bin/rbd"
-    lib.install "build/lib/libceph-common.0.dylib"
-    lib.install "build/lib/libceph-common.dylib"
-    lib.install "build/lib/librados.2.0.0.dylib"
-    lib.install "build/lib/librados.2.dylib"
-    lib.install "build/lib/librados.dylib"
-    lib.install "build/lib/libradosstriper.1.0.0.dylib"
-    lib.install "build/lib/libradosstriper.1.dylib"
-    lib.install "build/lib/libradosstriper.dylib"
-    lib.install "build/lib/librbd.1.12.0.dylib"
-    lib.install "build/lib/librbd.1.dylib"
-    lib.install "build/lib/librbd.dylib"
-    man8.install "build/doc/man/ceph-conf.8"
-    man8.install "build/doc/man/ceph-fuse.8"
-    man8.install "build/doc/man/ceph.8"
-    man8.install "build/doc/man/librados-config.8"
-    man8.install "build/doc/man/rados.8"
-    man8.install "build/doc/man/rbd-fuse.8"
-    man8.install "build/doc/man/rbd-ggate.8"
-    man8.install "build/doc/man/rbd-mirror.8"
-    man8.install "build/doc/man/rbd-nbd.8"
-    man8.install "build/doc/man/rbd-replay-many.8"
-    man8.install "build/doc/man/rbd-replay-prep.8"
-    man8.install "build/doc/man/rbd-replay.8"
-    man8.install "build/doc/man/rbd.8"
-    man8.install "build/doc/man/rbdmap.8"
-    ENV.prepend_create_path "PYTHONPATH", libexec
-    libexec.install "src/pybind/ceph_argparse.py"
-    libexec.install "src/pybind/ceph_daemon.py"
-    libexec.install "src/pybind/ceph_volume_client.py"
+
+    system "make", "--directory", "build/src/pybind", "install"
+    resources.each do |r|
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{pyver}/site-packages"
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-    system "make", "--directory", "build/src/pybind/rados/", "install"
-    system "make", "--directory", "build/src/pybind/rbd/", "install"
   end
 
   def caveats; <<~EOS
-    The fuse version shipped with osxfuse is to old to access the
+    The fuse version shipped with osxfuse is too old to access the
     supplementary group IDs in cephfs.
     Thus you need to add this to your ceph.conf to avoid errors:
 
