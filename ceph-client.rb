@@ -7,8 +7,8 @@ class CephClient < Formula
   bottle do
     root_url "https://github.com/zeichenanonym/homebrew-ceph-client/releases/download/mimic-13.2.2/"
     rebuild 3
-    sha256 "bdd251e5ac96c2ee9e174b7f1099e64c9e728f602b6f403e3fa021726f61e281" => :high_sierra
-    sha256 "23a92ceab5653c62a840658a304a53dd31289b80992c493fd3225e6daa70f169" => :mojave
+    sha256 "4d6353237078f0e10443ef3491ad99328ef13bf9b16108d8781c99ea228d2eb6" => :high_sierra
+    sha256 "156ccf908126ab48fdabc8887e0cd2f6555dd6b8d78a3bc117a4275ca6d2161a" => :mojave
   end
 
   depends_on :osxfuse
