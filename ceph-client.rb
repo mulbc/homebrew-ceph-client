@@ -152,12 +152,12 @@ end
 
 __END__
 diff --git a/src/auth/KeyRing.cc b/src/auth/KeyRing.cc
-index 832cae0a34..cd3af3470b 100644
+index 2ddc0b4ab22..2efb8b67a3b 100644
 --- a/src/auth/KeyRing.cc
 +++ b/src/auth/KeyRing.cc
-@@ -204,12 +204,12 @@ void KeyRing::decode(bufferlist::iterator& bl) {
+@@ -205,12 +205,12 @@ void KeyRing::decode(bufferlist::const_iterator& bl) {
    __u8 struct_v;
-   bufferlist::iterator start_pos = bl;
+   auto start_pos = bl;
    try {
 +    decode_plaintext(start_pos);
 +  } catch (...) {
@@ -165,31 +165,9 @@ index 832cae0a34..cd3af3470b 100644
      using ceph::decode;
      decode(struct_v, bl);
      decode(keys, bl);
--  } catch (buffer::error& err) {
+-  } catch (ceph::buffer::error& err) {
 -    keys.clear();
 -    decode_plaintext(start_pos);
    }
  }
  
-diff --git a/src/include/any.h b/src/include/any.h
-index 73e729b..241e0e6 100644
---- a/src/include/any.h
-+++ b/src/include/any.h
-@@ -15,17 +15,10 @@
- #ifndef INCLUDE_STATIC_ANY
- #define INCLUDE_STATIC_ANY
- 
--#if __has_include(<any>)
--#include <any>
--namespace ceph {
--  using std::bad_any_cast;
--}
--#else
- #include <boost/any.hpp>
- namespace ceph {
-   using boost::bad_any_cast;
- }
--#endif
- 
- #include <cstddef>
- #include <initializer_list>
