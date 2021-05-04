@@ -2,7 +2,7 @@ class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
   url "https://github.com/ceph/ceph.git", :using => :git, :revision => "e870f7a4288ead4355fb7c036fc99718bc062b77"
-  version "mimic-13.2.2"
+  version "quincy-17.0.0-3820-ge870f7a4288"
 
   bottle do
     root_url "https://github.com/zeichenanonym/homebrew-ceph-client/releases/download/mimic-13.2.2/"
