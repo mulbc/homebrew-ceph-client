@@ -11,10 +11,11 @@ class CephClient < Formula
     sha256 "156ccf908126ab48fdabc8887e0cd2f6555dd6b8d78a3bc117a4275ca6d2161a" => :mojave
   end
 
-  depends_on "osxfuse"
+  # depends_on "osxfuse"
   depends_on "boost" => :build
   depends_on "openssl" => :build
   depends_on "cmake" => :build
+  depends_on "ninja" => :build
   depends_on "cython" => :build
   depends_on "leveldb" => :build
   depends_on "nss"
@@ -67,8 +68,8 @@ class CephClient < Formula
       cython_rbd
     ]
     mkdir "build" do
-      system "cmake", "..", *args, *std_cmake_args
-      system "make", *targets
+      system "cmake", "-G", "Ninja", "..", *args, *std_cmake_args
+      system "ninja", *targets
       executables = %w[
         bin/rados
         bin/rbd
@@ -116,9 +117,9 @@ class CephClient < Formula
       ].each do |name|
         man8.install "doc/man/#{name}.8"
       end
+      system "ninja", "src/pybind/install"
     end
 
-    system "make", "--directory", "build/src/pybind", "install"
     resources.each do |r|
       r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
