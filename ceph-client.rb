@@ -19,7 +19,7 @@ class CephClient < Formula
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
-  depends_on "python@2"
+  depends_on "python3"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
 
@@ -31,7 +31,7 @@ class CephClient < Formula
   patch :DATA
 
   def install
-    pyver = Language::Python.major_minor_version "python"
+    pyver = Language::Python.major_minor_version "python3"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["nss"].opt_lib}/pkgconfig"
     ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["openssl"].opt_lib}/pkgconfig"
     ENV.prepend_path "PYTHONPATH", "#{Formula["cython"].opt_libexec}/lib/python#{pyver}/site-packages"
