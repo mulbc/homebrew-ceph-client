@@ -189,3 +189,29 @@ index 10cd418da00..a76b9469939 100644
 
  add_library(global-static STATIC
    $<TARGET_OBJECTS:libglobal_objs>)
+
+diff --git a/cmake/modules/Distutils.cmake b/cmake/modules/Distutils.cmake
+index cd17e500a17..406ff2ac8c1 100644
+--- a/cmake/modules/Distutils.cmake
++++ b/cmake/modules/Distutils.cmake
+@@ -79,9 +79,8 @@ function(distutils_add_cython_module target name src)
+     OUTPUT ${output_dir}/${name}${ext_suffix}
+     COMMAND
+     env
+-    CC="${PY_CC}"
++    CFLAGS="${cflags}"
+     CXX="${PY_CXX}"
+-    LDSHARED="${PY_LDSHARED}"
+     OPT=\"-DNDEBUG -g -fwrapv -O2 -w\"
+     LDFLAGS=-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+     CYTHON_BUILD_DIR=${CMAKE_CURRENT_BINARY_DIR}
+@@ -106,8 +105,6 @@ function(distutils_install_cython_module name)
+     set(CFLAG_DISABLE_VTA -fno-var-tracking-assignments)
+   endif()
+   install(CODE "
+-    set(ENV{CC} \"${PY_CC}\")
+-    set(ENV{LDSHARED} \"${PY_LDSHARED}\")
+     set(ENV{CPPFLAGS} \"-iquote${CMAKE_SOURCE_DIR}/src/include
+                         -D'void0=dead_function\(void\)' \
+                         -D'__Pyx_check_single_interpreter\(ARG\)=ARG \#\# 0' \
+
