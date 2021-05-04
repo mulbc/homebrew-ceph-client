@@ -171,3 +171,15 @@ index 2ddc0b4ab22..2efb8b67a3b 100644
    }
  }
  
+diff --git a/src/global/CMakeLists.txt b/src/global/CMakeLists.txt
+index 10cd418da00..a76b9469939 100644
+--- a/src/global/CMakeLists.txt
++++ b/src/global/CMakeLists.txt
+@@ -8,6 +8,7 @@ else()
+ endif()
+
+ add_library(libglobal_objs OBJECT ${libglobal_srcs})
++add_dependencies(libglobal_objs legacy-option-headers)
+
+ add_library(global-static STATIC
+   $<TARGET_OBJECTS:libglobal_objs>)
