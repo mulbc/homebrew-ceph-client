@@ -1,7 +1,7 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  url "https://github.com/ceph/ceph.git", :using => :git, :tag => "v13.2.2", :revision => "02899bfda814146b021136e9d8e80eba494e1126"
+  url "https://github.com/ceph/ceph.git", :using => :git, :revision => "e870f7a4288ead4355fb7c036fc99718bc062b77"
   version "mimic-13.2.2"
 
   bottle do
