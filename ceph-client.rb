@@ -105,7 +105,7 @@ class CephClient < Formula
         bin.install "bin/#{file}"
       end
       %w[
-        ceph-common.0
+        ceph-common.2
         ceph-common
         rados.2.0.0
         rados.2
@@ -113,7 +113,7 @@ class CephClient < Formula
         radosstriper.1.0.0
         radosstriper.1
         radosstriper
-        rbd.1.12.0
+        rbd.1.17.0
         rbd.1
         rbd
       ].each do |name|
