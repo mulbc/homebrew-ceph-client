@@ -129,7 +129,7 @@ class CephClient < Formula
       ].each do |name|
         man8.install "doc/man/#{name}.8"
       end
-      system "ninja", "src/pybind/install"
+      system "ninja", "src/pybind/install", "src/include/install"
     end
 
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
