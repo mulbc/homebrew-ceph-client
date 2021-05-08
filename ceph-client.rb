@@ -5,10 +5,8 @@ class CephClient < Formula
   version "quincy-17.0.0-3820-ge870f7a4288"
 
   bottle do
-    root_url "https://github.com/zeichenanonym/homebrew-ceph-client/releases/download/mimic-13.2.2/"
-    rebuild 4
-    sha256 high_sierra: "4d6353237078f0e10443ef3491ad99328ef13bf9b16108d8781c99ea228d2eb6"
-    sha256 mojave:      "156ccf908126ab48fdabc8887e0cd2f6555dd6b8d78a3bc117a4275ca6d2161a"
+    root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/v17.0.0-3820"
+    sha256 cellar: :any, big_sur: "3d451db221ad375b6344190890c5af919a6b3e7ae9041302f9ec467a61f407a1"
   end
 
   # depends_on "osxfuse"
