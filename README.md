@@ -11,7 +11,7 @@ If you don't have Homebrew, install it from their [homepage][homebrew].
 Then, add this tap:
 
 ```
-brew tap zeichenanonym/ceph-client
+brew tap mulbc/ceph-client
 ```
 
 ## Installing
