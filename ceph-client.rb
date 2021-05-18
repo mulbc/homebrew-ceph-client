@@ -125,7 +125,7 @@ class CephClient < Formula
         rados
         rbd
       ].each do |name|
-        man8.install "doc/man/#{name}.8"
+        man8.install "doc/man/8/#{name}.8"
       end
       system "ninja", "src/pybind/install", "src/include/install"
     end
