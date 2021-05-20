@@ -1,13 +1,8 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  url "https://github.com/ceph/ceph.git", :using => :git, :revision => "e870f7a4288ead4355fb7c036fc99718bc062b77"
-  version "quincy-17.0.0-3820-ge870f7a4288"
-
-  bottle do
-    root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/v17.0.0-3820"
-    sha256 cellar: :any, big_sur: "3d451db221ad375b6344190890c5af919a6b3e7ae9041302f9ec467a61f407a1"
-  end
+  url "https://github.com/ceph/ceph.git", :using => :git, :revision => "326569dfc40d2d6447d44b7a88b3e94f56797b48"
+  version "quincy-17.0.0-4378-g326569dfc40"
 
   # depends_on "osxfuse"
   depends_on "boost" => :build
@@ -175,35 +170,23 @@ index 2ddc0b4ab22..2efb8b67a3b 100644
    }
  }
  
-diff --git a/src/global/CMakeLists.txt b/src/global/CMakeLists.txt
-index 10cd418da00..a76b9469939 100644
---- a/src/global/CMakeLists.txt
-+++ b/src/global/CMakeLists.txt
-@@ -8,6 +8,7 @@ else()
- endif()
-
- add_library(libglobal_objs OBJECT ${libglobal_srcs})
-+add_dependencies(libglobal_objs legacy-option-headers)
-
- add_library(global-static STATIC
-   $<TARGET_OBJECTS:libglobal_objs>)
-
 diff --git a/cmake/modules/Distutils.cmake b/cmake/modules/Distutils.cmake
-index cd17e500a17..406ff2ac8c1 100644
+index 8dc69f0af51..0b2acaf160a 100644
 --- a/cmake/modules/Distutils.cmake
 +++ b/cmake/modules/Distutils.cmake
-@@ -79,9 +79,8 @@ function(distutils_add_cython_module target name src)
+@@ -79,11 +79,9 @@ function(distutils_add_cython_module target name src)
      OUTPUT ${output_dir}/${name}${ext_suffix}
      COMMAND
      env
 -    CC="${PY_CC}"
-+    CFLAGS="${cflags}"
+     CFLAGS="${PY_CFLAGS}"
+     CPPFLAGS="${PY_CPPFLAGS}"
      CXX="${PY_CXX}"
 -    LDSHARED="${PY_LDSHARED}"
      OPT=\"-DNDEBUG -g -fwrapv -O2 -w\"
      LDFLAGS=-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
      CYTHON_BUILD_DIR=${CMAKE_CURRENT_BINARY_DIR}
-@@ -106,8 +105,6 @@ function(distutils_install_cython_module name)
+@@ -108,8 +106,6 @@ function(distutils_install_cython_module name)
      set(CFLAG_DISABLE_VTA -fno-var-tracking-assignments)
    endif()
    install(CODE "
