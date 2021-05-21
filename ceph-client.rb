@@ -54,7 +54,7 @@ class CephClient < Formula
       -DWITH_CCACHE=OFF
       -DWITH_CEPHFS=OFF
       -DWITH_KRBD=OFF
-      -DWITH_LIBCEPHFS=OFF
+      -DWITH_LIBCEPHFS=ON
       -DWITH_LTTNG=OFF
       -DWITH_LZ4=OFF
       -DWITH_MANPAGE=ON
@@ -71,6 +71,7 @@ class CephClient < Formula
     targets = %w[
       rados
       rbd
+      cephfs
       ceph-conf
       ceph-fuse
       manpages
@@ -114,6 +115,9 @@ class CephClient < Formula
         rbd.1.17.0
         rbd.1
         rbd
+        cephfs.2.0.0
+        cephfs.2
+        cephfs
       ].each do |name|
         lib.install "lib/lib#{name}.dylib"
       end
