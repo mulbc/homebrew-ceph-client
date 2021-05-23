@@ -4,6 +4,11 @@ class CephClient < Formula
   url "https://github.com/ceph/ceph.git", :using => :git, :revision => "0def4cf21d897bbf911614d8e3fe32e14fb30f7f"
   version "quincy-17.0.0-4483-g0def4cf21d8"
 
+  bottle do
+    root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/quincy-17.0.0-4483"
+    sha256 cellar: :any, big_sur: "8796c05eaa6ac5065221ff6ba1b45201776666e5702f6573b8a3f857ba890d1f"
+  end
+
   # depends_on "osxfuse"
   depends_on "boost" => :build
   depends_on "openssl" => :build
