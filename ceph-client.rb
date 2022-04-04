@@ -141,6 +141,14 @@ class CephClient < Formula
     end
 
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    %w[
+      ceph-conf
+      ceph-fuse
+      rados
+      rbd
+    ].each do |name|
+      system "install_name_tool", "-add_rpath", "/opt/homebrew/lib", "#{libexec}/bin/#{name}"
+    end
   end
 
   def caveats; <<~EOS
