@@ -206,3 +206,24 @@ index 8dc69f0af51..0b2acaf160a 100644
                          -D'void0=dead_function\(void\)' \
                          -D'__Pyx_check_single_interpreter\(ARG\)=ARG \#\# 0' \
 
+diff --git a/src/librados/librados_c.cc b/src/librados/librados_c.cc
+index ae4a0e9dbb5..00fe0992abd 100644
+--- a/src/librados/librados_c.cc
++++ b/src/librados/librados_c.cc
+@@ -532,14 +532,14 @@ extern "C" void LIBRADOS_C_API_DEFAULT_F(rados_unset_osdmap_full_try)(
+ }
+ LIBRADOS_C_API_BASE_DEFAULT(rados_unset_pool_full_try);
+
+-extern "C" void _rados_set_pool_full_try(rados_ioctx_t io)
++extern "C" void LIBRADOS_C_API_DEFAULT_F(rados_set_pool_full_try)(rados_ioctx_t io)
+ {
+   librados::IoCtxImpl *ctx = (librados::IoCtxImpl *)io;
+   ctx->extra_op_flags |= CEPH_OSD_FLAG_FULL_TRY;
+ }
+ LIBRADOS_C_API_BASE_DEFAULT(rados_set_pool_full_try);
+
+-extern "C" void _rados_unset_pool_full_try(rados_ioctx_t io)
++extern "C" void LIBRADOS_C_API_DEFAULT_F(rados_unset_pool_full_try)(rados_ioctx_t io)
+ {
+   librados::IoCtxImpl *ctx = (librados::IoCtxImpl *)io;
+   ctx->extra_op_flags &= ~CEPH_OSD_FLAG_FULL_TRY;
