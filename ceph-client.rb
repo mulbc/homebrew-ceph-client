@@ -21,6 +21,15 @@ class CephClient < Formula
   depends_on "python3"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
+  def caveats
+    <<-EOS.undent
+      macFUSE must be installed prior to building this formula. macFUSE is also necessary
+      if you plan to use the FUSE support of CephFS. You can either install macFUSE from
+      https://osxfuse.github.io or use the following command:
+
+      brew install --cask macfuse
+    EOS
+  end
 
   resource "prettytable" do
     url "https://files.pythonhosted.org/packages/cb/7d/7e6bc4bd4abc49e9f4f5c4773bb43d1615e4b476d108d1b527318b9c6521/prettytable-3.2.0.tar.gz"
