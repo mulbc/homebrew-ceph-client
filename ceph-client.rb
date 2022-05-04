@@ -11,7 +11,7 @@ class CephClient < Formula
   end
 
   # depends_on "osxfuse"
-  depends_on "boost" => :build
+  depends_on "boost"
   depends_on "openssl" => :build
   depends_on "cmake" => :build
   depends_on "ninja" => :build
