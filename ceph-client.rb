@@ -1,8 +1,8 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  url "https://github.com/ceph/ceph.git", :using => :git, :revision => "0def4cf21d897bbf911614d8e3fe32e14fb30f7f"
-  version "quincy-17.0.0-4483-g0def4cf21d8"
+  url "https://download.ceph.com/tarballs/ceph-17.2.0.tar.gz"
+  sha256 "6cf2d838904f0c40a2c735790b543063ea675c727e6b7047ebddfa1e7505e71f"
 
   bottle do
     root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/quincy-17.0.0-4483"
@@ -173,26 +173,6 @@ class CephClient < Formula
 end
 
 __END__
-diff --git a/src/auth/KeyRing.cc b/src/auth/KeyRing.cc
-index 2ddc0b4ab22..2efb8b67a3b 100644
---- a/src/auth/KeyRing.cc
-+++ b/src/auth/KeyRing.cc
-@@ -205,12 +205,12 @@ void KeyRing::decode(bufferlist::const_iterator& bl) {
-   __u8 struct_v;
-   auto start_pos = bl;
-   try {
-+    decode_plaintext(start_pos);
-+  } catch (...) {
-+    keys.clear();
-     using ceph::decode;
-     decode(struct_v, bl);
-     decode(keys, bl);
--  } catch (ceph::buffer::error& err) {
--    keys.clear();
--    decode_plaintext(start_pos);
-   }
- }
- 
 diff --git a/cmake/modules/Distutils.cmake b/cmake/modules/Distutils.cmake
 index 8dc69f0af51..0b2acaf160a 100644
 --- a/cmake/modules/Distutils.cmake
@@ -219,24 +199,3 @@ index 8dc69f0af51..0b2acaf160a 100644
                          -D'void0=dead_function\(void\)' \
                          -D'__Pyx_check_single_interpreter\(ARG\)=ARG \#\# 0' \
 
-diff --git a/src/librados/librados_c.cc b/src/librados/librados_c.cc
-index ae4a0e9dbb5..00fe0992abd 100644
---- a/src/librados/librados_c.cc
-+++ b/src/librados/librados_c.cc
-@@ -532,14 +532,14 @@ extern "C" void LIBRADOS_C_API_DEFAULT_F(rados_unset_osdmap_full_try)(
- }
- LIBRADOS_C_API_BASE_DEFAULT(rados_unset_pool_full_try);
-
--extern "C" void _rados_set_pool_full_try(rados_ioctx_t io)
-+extern "C" void LIBRADOS_C_API_DEFAULT_F(rados_set_pool_full_try)(rados_ioctx_t io)
- {
-   librados::IoCtxImpl *ctx = (librados::IoCtxImpl *)io;
-   ctx->extra_op_flags |= CEPH_OSD_FLAG_FULL_TRY;
- }
- LIBRADOS_C_API_BASE_DEFAULT(rados_set_pool_full_try);
-
--extern "C" void _rados_unset_pool_full_try(rados_ioctx_t io)
-+extern "C" void LIBRADOS_C_API_DEFAULT_F(rados_unset_pool_full_try)(rados_ioctx_t io)
- {
-   librados::IoCtxImpl *ctx = (librados::IoCtxImpl *)io;
-   ctx->extra_op_flags &= ~CEPH_OSD_FLAG_FULL_TRY;
