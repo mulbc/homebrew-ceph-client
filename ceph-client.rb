@@ -3,6 +3,7 @@ class CephClient < Formula
   homepage "https://ceph.com"
   url "https://download.ceph.com/tarballs/ceph-17.2.5.tar.gz"
   sha256 "362269c147913af874b2249a46846b0e6f82d2ceb50af46222b6ddec9991b29a"
+  revision 2
 
   bottle do
     rebuild 2
