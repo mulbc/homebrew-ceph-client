@@ -1,8 +1,8 @@
 class CephClient < Formula
   desc "Ceph client tools and libraries"
   homepage "https://ceph.com"
-  url "https://download.ceph.com/tarballs/ceph-17.2.0.tar.gz"
-  sha256 "6cf2d838904f0c40a2c735790b543063ea675c727e6b7047ebddfa1e7505e71f"
+  url "https://download.ceph.com/tarballs/ceph-17.2.5.tar.gz"
+  sha256 "362269c147913af874b2249a46846b0e6f82d2ceb50af46222b6ddec9991b29a"
 
   bottle do
     rebuild 2
