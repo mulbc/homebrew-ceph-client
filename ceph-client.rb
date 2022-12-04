@@ -3,12 +3,12 @@ class CephClient < Formula
   homepage "https://ceph.com"
   url "https://download.ceph.com/tarballs/ceph-17.2.5.tar.gz"
   sha256 "362269c147913af874b2249a46846b0e6f82d2ceb50af46222b6ddec9991b29a"
-  revision 2
+  revision 1
 
   bottle do
-    rebuild 2
-    root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/quincy-17.2.0-2"
-    sha256 cellar: :any, arm64_monterey: "ce4b9c49fa3f6dcea28819fc3a190dbe78b23a3685407bef666ab76b1d25c25d"
+    rebuild 1
+    root_url "https://github.com/mulbc/homebrew-ceph-client/releases/download/quincy-17.2.5-1"
+    sha256 cellar: :any, arm64_ventura: "b6e30275e0c5012874b73130fd0119b7f40f8180f1c6b54e3abb1f8bf8680ed5"
   end
 
   # depends_on "osxfuse"
@@ -20,7 +20,7 @@ class CephClient < Formula
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
-  depends_on "python3"
+  depends_on "python@3.10"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
   def caveats
@@ -185,10 +185,10 @@ end
 
 __END__
 diff --git a/cmake/modules/Distutils.cmake b/cmake/modules/Distutils.cmake
-index 8dc69f0af51..0b2acaf160a 100644
+index 9d66ae979a6..eabf22bf174 100644
 --- a/cmake/modules/Distutils.cmake
 +++ b/cmake/modules/Distutils.cmake
-@@ -79,11 +79,9 @@ function(distutils_add_cython_module target name src)
+@@ -93,11 +93,9 @@ function(distutils_add_cython_module target name src)
      OUTPUT ${output_dir}/${name}${ext_suffix}
      COMMAND
      env
@@ -200,13 +200,21 @@ index 8dc69f0af51..0b2acaf160a 100644
      OPT=\"-DNDEBUG -g -fwrapv -O2 -w\"
      LDFLAGS=-L${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
      CYTHON_BUILD_DIR=${CMAKE_CURRENT_BINARY_DIR}
-@@ -108,8 +106,6 @@ function(distutils_install_cython_module name)
-     set(CFLAG_DISABLE_VTA -fno-var-tracking-assignments)
+@@ -125,8 +123,6 @@ function(distutils_install_cython_module name)
+     set(maybe_verbose --verbose)
    endif()
    install(CODE "
 -    set(ENV{CC} \"${PY_CC}\")
 -    set(ENV{LDSHARED} \"${PY_LDSHARED}\")
      set(ENV{CPPFLAGS} \"-iquote${CMAKE_SOURCE_DIR}/src/include
                          -D'void0=dead_function\(void\)' \
-                         -D'__Pyx_check_single_interpreter\(ARG\)=ARG \#\# 0' \
+                         -D'__Pyx_check_single_interpreter\(ARG\)=ARG\#\#0' \
+@@ -135,7 +131,7 @@ function(distutils_install_cython_module name)
+     set(ENV{CYTHON_BUILD_DIR} \"${CMAKE_CURRENT_BINARY_DIR}\")
+     set(ENV{CEPH_LIBDIR} \"${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\")
 
+-    set(options --prefix=${CMAKE_INSTALL_PREFIX})
++    set(options --prefix=${CMAKE_INSTALL_PREFIX} --install-lib=${CMAKE_INSTALL_PREFIX}/lib/python3.10/site-packages)
+     if(DEFINED ENV{DESTDIR})
+       if(EXISTS /etc/debian_version)
+         list(APPEND options --install-layout=deb)
