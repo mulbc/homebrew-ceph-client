@@ -20,7 +20,7 @@ class CephClient < Formula
   depends_on "leveldb" => :build
   depends_on "nss"
   depends_on "pkg-config" => :build
-  depends_on "python@3.10"
+  depends_on "python@3.11"
   depends_on "sphinx-doc" => :build
   depends_on "yasm"
   def caveats
@@ -77,6 +77,7 @@ class CephClient < Formula
       -DWITH_MANPAGE=ON
       -DWITH_MGR=OFF
       -DWITH_MGR_DASHBOARD_FRONTEND=OFF
+      -DWITH_PYTHON3=3.11
       -DWITH_RADOSGW=OFF
       -DWITH_RDMA=OFF
       -DWITH_SPDK=OFF
@@ -214,7 +215,7 @@ index 9d66ae979a6..eabf22bf174 100644
      set(ENV{CEPH_LIBDIR} \"${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\")
 
 -    set(options --prefix=${CMAKE_INSTALL_PREFIX})
-+    set(options --prefix=${CMAKE_INSTALL_PREFIX} --install-lib=${CMAKE_INSTALL_PREFIX}/lib/python3.10/site-packages)
++    set(options --prefix=${CMAKE_INSTALL_PREFIX} --install-lib=${CMAKE_INSTALL_PREFIX}/lib/python3.11/site-packages)
      if(DEFINED ENV{DESTDIR})
        if(EXISTS /etc/debian_version)
          list(APPEND options --install-layout=deb)
